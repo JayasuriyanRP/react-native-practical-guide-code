@@ -12,9 +12,14 @@ import {
 interface CategoryGridTileProps {
   title: string;
   color: string;
+  onPress: () => void;
 }
 
-const CategoryGridTile: FC<CategoryGridTileProps> = ({ title, color }) => {
+const CategoryGridTile: FC<CategoryGridTileProps> = ({
+  title,
+  color,
+  onPress,
+}) => {
   const { height, width } = useWindowDimensions();
 
   const gridItemDimStyle: ViewStyle = {
@@ -30,6 +35,7 @@ const CategoryGridTile: FC<CategoryGridTileProps> = ({ title, color }) => {
           styles.button,
           pressed ? styles.buttonPressed : null,
         ]}
+        onPress={onPress}
       >
         <View style={[styles.innerContainer, { backgroundColor: color }]}>
           <Text style={styles.title}>{title}</Text>
