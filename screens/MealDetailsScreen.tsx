@@ -8,23 +8,32 @@ import {
 } from "react-native";
 import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import { ProductStackParamList } from "../App";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MEALS } from "../data/dummy-data";
 import MealDetails from "../components/MealDetails";
 import SubTitle from "../components/MealDetails/SubTitle";
 import List from "../components/MealDetails/List";
 import IconButton from "../components/IconButton";
+import { FavoritesContext } from "../store/context/favorites-context";
 
 const MealDetailsScreen = () => {
   const route = useRoute<RouteProp<ProductStackParamList, "MealsDetails">>();
   const navigate =
     useNavigation<StackNavigationProp<ProductStackParamList, "MealsDetails">>();
 
+  const favoriteContext = useContext(FavoritesContext);
   const mealId = route.params.mealId;
   const foundMeal = MEALS.find((x) => x.id === mealId);
 
+  const isMealFavorite = favoriteContext?.ids.includes(mealId);
+
   function onHeaderButtonPressed() {
+    if (isMealFavorite) {
+      favoriteContext?.removeFavorites(mealId);
+    } else {
+      favoriteContext?.addFavorites(mealId);
+    }
     console.log("Pressed");
   }
 
@@ -32,7 +41,13 @@ const MealDetailsScreen = () => {
     navigate.setOptions({
       headerTitle: foundMeal?.title,
       headerRight: () => {
-        return <IconButton onPress={onHeaderButtonPressed} color="white" />;
+        return (
+          <IconButton
+            onPress={onHeaderButtonPressed}
+            color="white"
+            isFav={isMealFavorite ? true : false}
+          />
+        );
       },
     });
   }, [mealId, foundMeal, navigate, onHeaderButtonPressed]);

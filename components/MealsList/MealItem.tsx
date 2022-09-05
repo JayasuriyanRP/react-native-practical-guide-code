@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { View, Text, Pressable, StyleSheet, Image } from "react-native";
-import MealDetails from "./MealDetails";
+import MealDetails from "../MealDetails";
 
 interface MealItemProps {
   title: string;

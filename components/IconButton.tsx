@@ -4,15 +4,20 @@ import { Ionicons } from "@expo/vector-icons";
 interface IconButtonProps {
   onPress: () => void;
   color: string;
+  isFav: boolean;
 }
 
-const IconButton = ({ onPress, color }: IconButtonProps) => {
+const IconButton = ({ onPress, color, isFav }: IconButtonProps) => {
   return (
     <Pressable
       style={({ pressed }) => pressed && styles.pressed}
       onPress={onPress}
     >
-      <Ionicons name="star" size={24} color={color} />
+      <Ionicons
+        name={isFav ? "star" : "star-outline"}
+        size={24}
+        color={color}
+      />
     </Pressable>
   );
 };
